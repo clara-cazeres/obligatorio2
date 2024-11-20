@@ -1,0 +1,14 @@
+
+{
+  "expo": {
+    "name": "TuApp",
+    "slug": "tu-app",
+    "extra": {},
+    "android": {
+      "newArchEnabled": true
+    },
+    "ios": {
+      "newArchEnabled": true
+    }
+  }
+}
