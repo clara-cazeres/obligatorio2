@@ -6,8 +6,9 @@ import GraficaCompras from './funcionalidades/GraficaCompras';
 import GraficaMonedas from './funcionalidades/GraficaMonedas';
 import CrearTransaccion from './funcionalidades/CrearTransaccion';
 import ListadoTransacciones from './funcionalidades/ListadoTransacciones';
+import InversionTotal from './funcionalidades/InversionTotal';
 import SugerenciaOperacion from './funcionalidades/SugerenciaOperacion';
-import CustomDrawerContent from './drawer/CustomDrawerContent'; // Actualizado
+import CustomDrawerContent from './drawer/CustomDrawerContent'; 
 
 const Drawer = createDrawerNavigator();
 
@@ -37,6 +38,7 @@ const Aplicacion = () => {
       <Drawer.Screen name="Inicio" component={Inicio} />
       <Drawer.Screen name="Crear Transacción" component={CrearTransaccion} />
       <Drawer.Screen name="Listado de Transacciones" component={ListadoTransacciones} />
+      <Drawer.Screen name="Inversión Total" component={InversionTotal} />
       <Drawer.Screen name="Sugerencia de Operación" component={SugerenciaOperacion} />
       <Drawer.Screen name="Gráfica Ventas" component={GraficaVentas} />
       <Drawer.Screen name="Gráfica Compras" component={GraficaCompras} />

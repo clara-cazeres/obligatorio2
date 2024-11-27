@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
-import { Picker } from "@react-native-picker/picker"; // Importación del nuevo Picker
+import { Picker } from "@react-native-picker/picker";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMonedas } from "../../features/monedasSlice";
 import { crearTransaccion } from "../../features/transaccionesSlice";
@@ -51,6 +51,13 @@ const CrearTransaccion = () => {
       valorActual: cotizacion,
     };
 
+    console.log("Datos enviados en la transacción:", transaccion);
+
+    if (!transaccion.valorActual) {
+      Alert.alert("Error", "El valor actual de la moneda no está disponible.");
+      return;
+    }
+
     try {
       const response = await dispatch(crearTransaccion(transaccion)).unwrap();
       Alert.alert(
@@ -68,7 +75,7 @@ const CrearTransaccion = () => {
       <Text style={styles.label}>Tipo de Operación</Text>
       <Picker
         selectedValue={tipoOperacion}
-        onValueChange={(itemValue) => setTipoOperacion(itemValue)}
+        onValueChange={setTipoOperacion}
         style={styles.input}
       >
         <Picker.Item label="Seleccione una operación" value="" />
@@ -82,7 +89,7 @@ const CrearTransaccion = () => {
       ) : monedas?.length > 0 ? (
         <Picker
           selectedValue={moneda}
-          onValueChange={(itemValue) => setMoneda(itemValue)}
+          onValueChange={setMoneda}
           style={styles.input}
         >
           <Picker.Item label="Seleccione una moneda" value="" />
@@ -100,13 +107,12 @@ const CrearTransaccion = () => {
         Valor actual en UYU: {cotizacion !== null ? cotizacion : "Seleccionar moneda"}
       </Text>
 
-
       <Text style={styles.label}>Cantidad</Text>
       <TextInput
         placeholder="Ingrese la cantidad"
         placeholderTextColor="#cbcbcb"
         value={cantidad}
-        onChangeText={(text) => setCantidad(text.replace(/[^0-9.]/g, ""))} // Solo números
+        onChangeText={(text) => setCantidad(text.replace(/[^0-9.]/g, ""))}
         style={styles.input}
         keyboardType="numeric"
       />
@@ -121,7 +127,7 @@ const CrearTransaccion = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flexstart",
+    justifyContent: "flex-start",
     padding: 20,
     backgroundColor: "#141519",
   },

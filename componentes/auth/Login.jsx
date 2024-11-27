@@ -36,7 +36,7 @@ const Login = ({ navigation }) => {
         await AsyncStorage.setItem('idUsuario', id.toString()); // Asegurar que el ID sea un string
   
         Alert.alert("Inicio exitoso", "Bienvenido, " + username);
-        navigation.navigate('Inicio');
+        navigation.navigate('Aplicacion');
         console.log(navigation.getState());
 
       } else {

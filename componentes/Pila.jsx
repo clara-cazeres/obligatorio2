@@ -12,10 +12,21 @@ const Stack = createStackNavigator()
 const Pila = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="Registro" component={Registro} />
-      <Stack.Screen name="Aplicacion" component={Aplicacion} options={{ headerShown: false }} />
-
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Registro"
+        component={Registro}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Aplicacion"
+        component={Aplicacion}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   )
 }
