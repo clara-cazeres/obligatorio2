@@ -8,7 +8,7 @@ const GraficaVentas = () => {
   const transacciones = useSelector((state) => state.transacciones.lista);
   const monedas = useSelector((state) => state.monedas.lista);
 
-  // Calcular montos de venta por moneda
+  // ventas por moneda
   const ventasPorMoneda = transacciones.reduce((acc, transaccion) => {
     if (transaccion.tipoOperacion === 2) { 
       const moneda = monedas.find(moneda => moneda.id === transaccion.moneda);
@@ -22,7 +22,7 @@ const GraficaVentas = () => {
     return acc;
   }, {});
 
-  // Datos para la gráfica
+  //datos gráfica
   const labels = Object.keys(ventasPorMoneda);
   const data = Object.values(ventasPorMoneda);
 

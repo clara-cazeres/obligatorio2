@@ -27,13 +27,13 @@ const Login = ({ navigation }) => {
       if (response.ok && data.codigo === 200) {
         const { apiKey, id } = data;
   
-        // Guardar datos en Redux
+        //datos en redux
         dispatch(loguear({ apiKey, username, idUsuario: id }));
   
-        // Guardar datos en AsyncStorage
+        //datos en AsyncStorage
         await AsyncStorage.setItem('apiKey', apiKey);
         await AsyncStorage.setItem('username', username);
-        await AsyncStorage.setItem('idUsuario', id.toString()); // Asegurar que el ID sea un string
+        await AsyncStorage.setItem('idUsuario', id.toString());
   
         Alert.alert("Inicio exitoso", "Bienvenido, " + username);
         navigation.navigate('Aplicacion');

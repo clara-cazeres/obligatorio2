@@ -24,7 +24,7 @@ const InversionTotal = () => {
       <Text
         style={[
           styles.total,
-          { color: totalInversion >= 0 ? "#28a745" : "#dc3545" }, // Verde o rojo según el monto
+          { color: totalInversion >= 0 ? "#28a745" : "#dc3545" }, // color segun monto
         ]}
       >
         ${totalInversion.toLocaleString("es-UY")}

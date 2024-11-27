@@ -7,7 +7,6 @@ const GraficaCompras = () => {
   const transacciones = useSelector((state) => state.transacciones.lista);
   const monedas = useSelector((state) => state.monedas.lista);
 
-  // Procesar montos de compra
   const comprasPorMoneda = transacciones.reduce((acc, transaccion) => {
     if (transaccion.tipoOperacion === 1) { 
       const moneda = monedas.find((moneda) => moneda.id === transaccion.moneda);
@@ -21,7 +20,7 @@ const GraficaCompras = () => {
     return acc;
   }, {});
 
-  // Preparar datos para la gráfica
+  //  datos gráfica
   const chartData = Object.keys(comprasPorMoneda).map((nombreMoneda, index) => ({
     name: nombreMoneda,
     amount: comprasPorMoneda[nombreMoneda],
@@ -36,8 +35,8 @@ const GraficaCompras = () => {
       {chartData.length > 0 ? (
         <PieChart
           data={chartData}
-          width={Dimensions.get("window").width - 30} // Ancho de la gráfica
-          height={220} // Altura de la gráfica
+          width={Dimensions.get("window").width - 30} 
+          height={220} 
           chartConfig={{
             backgroundColor: "#141519",
             backgroundGradientFrom: "#141519",
@@ -48,7 +47,7 @@ const GraficaCompras = () => {
           accessor="amount"
           backgroundColor="transparent"
           paddingLeft="15"
-          absolute // Mostrar valores absolutos
+          absolute 
         />
       ) : (
         <Text style={styles.emptyMessage}>

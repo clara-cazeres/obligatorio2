@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// Thunk para crear una transacción
+// crear una transacción
 export const crearTransaccion = createAsyncThunk(
   "transacciones/crearTransaccion",
   async (transaccion, { getState, rejectWithValue }) => {
@@ -36,7 +36,7 @@ export const crearTransaccion = createAsyncThunk(
   }
 );
 
-// Thunk para obtener las transacciones
+//obtener las transacciones
 export const fetchTransacciones = createAsyncThunk(
   "transacciones/fetchTransacciones",
   async ({ idUsuario, apiKey }, { rejectWithValue }) => {

@@ -14,7 +14,7 @@ const Registro = ({ navigation }) => {
   const [ciudad, setCiudad] = useState('');
   const dispatch = useDispatch();
 
-  // Fetch departamentos
+  // fetch departamentos
   useEffect(() => {
     const fetchDepartamentos = async () => {
       try {
@@ -35,7 +35,7 @@ const Registro = ({ navigation }) => {
     fetchDepartamentos();
   }, []);
 
-  // Fetch ciudades
+  // fetch ciudades
   useEffect(() => {
     if (!departamento) return;
 
@@ -61,7 +61,7 @@ const Registro = ({ navigation }) => {
     fetchCiudades();
   }, [departamento]);
 
-  // Handle registration
+  // menajo de registro
   const handleRegister = async () => {
     if (!username || !password || !departamento || !ciudad) {
       Alert.alert("Error", "Por favor completa todos los campos.");
@@ -85,10 +85,10 @@ const Registro = ({ navigation }) => {
       if (response.ok && data.codigo === 200) {
         const { apiKey, id } = data;
 
-        // Actualizar el estado global
+        // actualiza el estado global
         dispatch(loguear({ apiKey, username, idUsuario: id }));
 
-        // Guardar en AsyncStorage
+        // guardar en AsyncStorage
         await AsyncStorage.setItem('apiKey', apiKey);
         await AsyncStorage.setItem('username', username);
         await AsyncStorage.setItem('idUsuario', id.toString());

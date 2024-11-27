@@ -18,7 +18,7 @@ export const usuarioSlice = createSlice({
       state.username = action.payload.username;
       state.idUsuario = action.payload.idUsuario;
 
-      // Guardar en AsyncStorage
+      // guardar en AsyncStorage
       AsyncStorage.setItem("apiKey", action.payload.apiKey);
       AsyncStorage.setItem("username", action.payload.username);
       AsyncStorage.setItem("idUsuario", action.payload.idUsuario.toString());
@@ -29,7 +29,7 @@ export const usuarioSlice = createSlice({
       state.username = null;
       state.idUsuario = null;
 
-      // Limpiar datos de AsyncStorage al cerrar sesión
+      // limpiar datos al cerrar sesión
       AsyncStorage.removeItem("apiKey");
       AsyncStorage.removeItem("username");
       AsyncStorage.removeItem("idUsuario");

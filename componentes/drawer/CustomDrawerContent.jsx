@@ -14,17 +14,17 @@ const CustomDrawerContent = (props) => {
 
   return (
     <DrawerContentScrollView {...props} contentContainerStyle={styles.container}>
-      {/* Encabezado con título */}
+    
       <View style={styles.header}>
         <Text style={styles.title}>Bitwise</Text>
       </View>
 
-      {/* Opciones de navegación */}
+   
       <View style={styles.menu}>
         <DrawerItemList {...props} />
       </View>
 
-      {/* Footer con usuario y botón de cerrar sesión */}
+   
       <View style={styles.footer}>
         <Text style={styles.username}>Usuario: {username || 'No identificado'}</Text>
         <TouchableOpacity style={styles.logoutButton} onPress={cerrarSesion}>
