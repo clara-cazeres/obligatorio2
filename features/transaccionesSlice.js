@@ -7,7 +7,7 @@ export const crearTransaccion = createAsyncThunk(
   async (transaccion, { getState, rejectWithValue }) => {
     const { apiKey } = getState().usuario;
     try {
-      const fechaCreacion = new Date().toISOString();
+     
       const response = await fetch(
         "https://crypto.develotion.com/transacciones.php",
         {
@@ -28,7 +28,7 @@ export const crearTransaccion = createAsyncThunk(
       return {
         ...transaccion,
         idTransaccion: data.idTransaccion || new Date().getTime(),
-        fecha: fechaCreacion,
+   
       };
     } catch (error) {
       return rejectWithValue("Error de conexión: " + error.message);
@@ -58,7 +58,7 @@ export const fetchTransacciones = createAsyncThunk(
       if (response.ok && data.codigo === 200) {
         return data.transacciones.map((transaccion) => ({
           ...transaccion,
-          fecha: transaccion.fecha || new Date().toISOString(),
+
         }));
       } else {
         return rejectWithValue(data.mensaje || "Error al obtener transacciones.");

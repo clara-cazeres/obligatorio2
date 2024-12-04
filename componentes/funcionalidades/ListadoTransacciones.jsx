@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
+import { View, Text, FlatList } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTransacciones } from "../../features/transaccionesSlice";
 import { fetchMonedas } from "../../features/monedasSlice";
-import dayjs from "dayjs";
 
 const ListadoTransacciones = () => {
   const dispatch = useDispatch();
@@ -22,25 +22,8 @@ const ListadoTransacciones = () => {
   }, [dispatch, idUsuario, apiKey, monedas]);
 
   const getNombreMoneda = (idMoneda) => {
-    console.log("ID de moneda recibido:", idMoneda);
-    console.log("Lista de monedas disponible:", monedas);
     const moneda = monedas.find((m) => m.id === idMoneda);
-    if (!moneda) {
-      console.warn(`Moneda con ID ${idMoneda} no encontrada.`);
-    }
     return moneda ? moneda.nombre : "Moneda no disponible";
-  };
-
-  const formatFecha = (fechaISO) => {
-    console.log("Valor recibido por formatFecha:", fechaISO);
-    try {
-      const formattedDate = dayjs(fechaISO).format("DD/MM/YYYY");
-      console.log("Fecha formateada:", formattedDate);
-      return formattedDate;
-    } catch (error) {
-      console.error("Error en formatFecha:", error);
-      return "Fecha no válida";
-    }
   };
 
   return (
@@ -54,28 +37,21 @@ const ListadoTransacciones = () => {
           keyExtractor={(item, index) =>
             item.idTransaccion?.toString() || index.toString()
           }
-          renderItem={({ item }) => {
-            console.log("Transacción actual:", item);
-            return (
-              <View style={styles.transaccion}>
-                <Text style={styles.tipo}>
-                  {item.tipoOperacion === 1 ? "Compra" : "Venta"} -{" "}
-                  {getNombreMoneda(item.moneda)}
-                </Text>
-                <Text style={styles.cantidad}>Cantidad: {item.cantidad}</Text>
-                <Text style={styles.valor}>Valor: $ {item.valorActual}</Text>
-                <Text style={styles.fecha}>
-                  Fecha: {item.fecha ? formatFecha(item.fecha) : "Sin fecha"}
-                </Text>
-              </View>
-            );
-          }}
+          renderItem={({ item }) => (
+            <View style={styles.transaccion}>
+              <Text style={styles.tipo}>
+                {item.tipoOperacion === 1 ? "Compra" : "Venta"} -{" "}
+                {getNombreMoneda(item.moneda)}
+              </Text>
+              <Text style={styles.cantidad}>Cantidad: {item.cantidad}</Text>
+              <Text style={styles.valor}>Valor: $ {item.valorActual}</Text>
+            </View>
+          )}
         />
       )}
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -115,11 +91,8 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     marginBottom: 5,
   },
-  fecha: {
-    fontSize: 14,
-    color: "#cccccc",
-    marginTop: 5,
-  },
 });
 
+
 export default ListadoTransacciones;
+
