@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import { StyleSheet } from "react-native";
-import { View, Text, FlatList } from "react-native";
+import { StyleSheet, View, Text, FlatList } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTransacciones } from "../../features/transaccionesSlice";
 import { fetchMonedas } from "../../features/monedasSlice";
+import { globalStyles } from "../../styles/styles";
 
 const ListadoTransacciones = () => {
   const dispatch = useDispatch();
@@ -26,25 +26,32 @@ const ListadoTransacciones = () => {
     return moneda ? moneda.nombre : "Moneda no disponible";
   };
 
+  const transaccionesValidas = transacciones.filter((item) => item.id !== undefined);
+
+  const transaccionesConIndices = transaccionesValidas.map((item, index) => ({
+    ...item,
+    originalIndex: index + 1,
+  }));
+
+  const transaccionesOrdenadas = [...transaccionesConIndices].sort((a, b) => b.id - a.id);
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Mis transacciones</Text>
-      {transacciones.length === 0 ? (
-        <Text style={styles.empty}>No hay transacciones registradas.</Text>
+    <View style={globalStyles.container}>
+      <Text style={globalStyles.title}>Mis transacciones</Text>
+      <Text style={globalStyles.subtitle}>Orden de más a menos reciente</Text>
+      {transaccionesOrdenadas.length === 0 ? (
+        <Text style={globalStyles.empty}>No hay transacciones registradas.</Text>
       ) : (
         <FlatList
-          data={transacciones}
-          keyExtractor={(item, index) =>
-            item.idTransaccion?.toString() || index.toString()
-          }
+          data={transaccionesOrdenadas}
+          keyExtractor={(item, index) => (item.id ? item.id.toString() : `trans-${index}`)}
           renderItem={({ item }) => (
-            <View style={styles.transaccion}>
-              <Text style={styles.tipo}>
-                {item.tipoOperacion === 1 ? "Compra" : "Venta"} -{" "}
-                {getNombreMoneda(item.moneda)}
+            <View style={globalStyles.card}>
+              <Text style={globalStyles.cardtitle}>
+                {item.tipoOperacion === 1 ? "Compra de:" : "Venta de:"} {getNombreMoneda(item.moneda)}
               </Text>
-              <Text style={styles.cantidad}>Cantidad: {item.cantidad}</Text>
-              <Text style={styles.valor}>Valor: $ {item.valorActual}</Text>
+              <Text style={globalStyles.text}>Cantidad: {item.cantidad}</Text>
+              <Text style={globalStyles.text}>Valor: $ {item.valorActual}</Text>
             </View>
           )}
         />
@@ -52,47 +59,14 @@ const ListadoTransacciones = () => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: "#242529",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#e3e553",
-    marginBottom: 20,
-    textAlign: "center",
-  },
-  empty: {
-    color: "#ffffff",
-    textAlign: "center",
-  },
-  transaccion: {
-    backgroundColor: "#141519",
-    padding: 15,
-    borderRadius: 5,
-    marginBottom: 15,
-  },
-  tipo: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#e3e553",
-    marginBottom: 5,
-  },
-  cantidad: {
-    fontSize: 16,
-    color: "#ffffff",
-    marginBottom: 5,
-  },
-  valor: {
-    fontSize: 16,
-    color: "#ffffff",
-    marginBottom: 5,
+  index: {
+    fontSize: 12,
+    color: "#a7a7a7",
+    textAlign: "right",
+    marginTop: 5,
   },
 });
 
-
 export default ListadoTransacciones;
-

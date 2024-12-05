@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { loguear } from '../../features/usuarioSlice';
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Importar AsyncStorage
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = ({ navigation }) => {
   const [username, setUsername] = useState('');

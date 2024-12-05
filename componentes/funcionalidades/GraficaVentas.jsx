@@ -1,15 +1,14 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 import { useSelector } from 'react-redux';
-import { commonStyles } from '../../styles/styles';
+import { globalStyles, chartStyles } from '../../styles/styles';
 
 const GraficaVentas = () => {
   const transacciones = useSelector((state) => state.transacciones.lista);
   const monedas = useSelector((state) => state.monedas.lista);
 
-  // Agrupar ventas por moneda
   const ventasPorMoneda = transacciones.reduce((acc, transaccion) => {
     if (transaccion.tipoOperacion === 2) {
       const moneda = monedas.find((moneda) => moneda.id === transaccion.moneda);
@@ -23,40 +22,52 @@ const GraficaVentas = () => {
     return acc;
   }, {});
 
-  // Preparar datos para la gráfica
+  // datos gráfica
   const chartData = Object.keys(ventasPorMoneda).map((nombreMoneda, index) => ({
     name: nombreMoneda,
     cantidad: ventasPorMoneda[nombreMoneda],
     color: `rgba(${(index * 100) % 255}, ${(index * 50) % 255}, ${(index * 150) % 255}, 1)`,
     legendFontColor: '#FFF',
-    legendFontSize: 12,
+    legendFontSize: 14,
   }));
 
   return (
-    <View style={commonStyles.container}>
-      <Text style={commonStyles.title}>Montos Vendidos por Moneda</Text>
+    <View style={globalStyles.container}>
+      <Text style={globalStyles.title}>Montos Vendidos por Moneda</Text>
       {chartData.length > 0 ? (
-        <PieChart
-          data={chartData}
-          width={Dimensions.get('window').width - 30} // Ajuste dinámico del ancho
-          height={220}
-          chartConfig={{
-            backgroundColor: '#1c1c1e',
-            backgroundGradientFrom: '#1c1c1e',
-            backgroundGradientTo: '#1c1c1e',
-            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          }}
-          accessor="cantidad"
-          backgroundColor="transparent"
-          paddingLeft="15"
-          absolute
-        />
+        <>
+          <PieChart
+            data={chartData}
+            width={Dimensions.get('window').width + 0}
+            height={220}
+            hasLegend={false}
+            chartConfig={chartStyles.chartConfig}
+            accessor="cantidad"
+            backgroundColor="transparent"
+            paddingLeft="15"
+            absolute
+          />
+          {/* leyenda personalizada */}
+          <View style={chartStyles.legendContainer}>
+            {chartData.map((item, index) => (
+              <View key={index} style={chartStyles.legendItem}>
+                <View
+                  style={[chartStyles.colorBox, { backgroundColor: item.color }]}
+                />
+                <Text style={chartStyles.legendText}>
+                  {item.name}: {item.cantidad.toFixed(2)}
+                </Text>
+              </View>
+            ))}
+          </View>
+        </>
       ) : (
-        <Text style={commonStyles.text}>No hay datos de ventas disponibles.</Text>
+        <Text style={globalStyles.text}>No hay datos de ventas disponibles.</Text>
       )}
     </View>
   );
 };
+
+
 
 export default GraficaVentas;

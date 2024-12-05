@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
 import { useSelector } from 'react-redux';
-import { commonStyles, chartStyles } from '../../styles/styles';
+import { globalStyles, chartStyles } from '../../styles/styles';
 
 const GraficaCompras = () => {
   const transacciones = useSelector((state) => state.transacciones.lista);
@@ -22,44 +22,44 @@ const GraficaCompras = () => {
     name: nombre,
     cantidad: comprasPorMoneda[nombre],
     color: `rgba(${(index * 50) % 255}, ${(index * 100) % 255}, 200, 1)`,
-    legendFontColor: commonStyles.text.color,
+    legendFontColor: globalStyles.text.color,
     legendFontSize: 12,
   }));
 
   return (
-    <View style={commonStyles.container}>
-      <Text style={commonStyles.title}>Montos Comprados por Moneda</Text>
+    <View style={globalStyles.container}>
+      <Text style={globalStyles.title}>Montos Comprados por Moneda</Text>
       {chartData.length > 0 ? (
         <>
           <PieChart
-            data={chartData}
-            width={Dimensions.get('window').width - 30}
-            height={220}
-            chartConfig={chartStyles.chartConfig}
-            accessor="cantidad"
-            backgroundColor="transparent"
-            paddingLeft="15"
-            absolute
+             data={chartData}
+             width={Dimensions.get('window').width + 0}
+             height={220}
+             hasLegend={false}
+             chartConfig={chartStyles.chartConfig}
+             accessor="cantidad"
+             backgroundColor="transparent"
+             paddingLeft="15"
+             absolute
           />
-          <View style={styles.legend}>
+          {/* leyenda personalizada */}
+          <View style={chartStyles.legendContainer}>
             {chartData.map((item, index) => (
-              <Text key={index} style={commonStyles.text}>
-                {item.name}: {item.cantidad.toFixed(2)}
-              </Text>
+              <View key={index} style={chartStyles.legendItem}>
+                <View
+                  style={[chartStyles.colorBox, { backgroundColor: item.color }]}
+                />
+                <Text style={chartStyles.legendText}>
+                  {item.name}: {item.cantidad.toFixed(2)}
+                </Text>
+              </View>
             ))}
           </View>
         </>
       ) : (
-        <Text style={commonStyles.text}>No hay datos para mostrar.</Text>
+        <Text style={globalStyles.text}>No hay datos de ventas disponibles.</Text>
       )}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  legend: {
-    marginTop: 20,
-  },
-});
-
 export default GraficaCompras;

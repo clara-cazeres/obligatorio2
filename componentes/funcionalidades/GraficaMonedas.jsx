@@ -8,9 +8,9 @@ const GraficaMoneda = () => {
   const transacciones = useSelector((state) => state.transacciones.lista);
   const monedas = useSelector((state) => state.monedas.lista);
 
-  const [monedaSeleccionada, setMonedaSeleccionada] = useState(''); // moneda seleccionada
+  const [monedaSeleccionada, setMonedaSeleccionada] = useState(''); 
 
-  // filtro monedas que tienen al menos una transacción
+  // filtro monedas con al menos una transacción
   const monedasConTransacciones = monedas.filter(moneda =>
     transacciones.some(transaccion => transaccion.moneda === moneda.id)
   );

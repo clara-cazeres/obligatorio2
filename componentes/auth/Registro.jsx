@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { Picker } from "@react-native-picker/picker"; // Nueva importación
+import { Picker } from "@react-native-picker/picker"; 
 import { useDispatch } from 'react-redux';
 import { loguear } from '../../features/usuarioSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -85,7 +85,6 @@ const Registro = ({ navigation }) => {
       if (response.ok && data.codigo === 200) {
         const { apiKey, id } = data;
 
-        // actualiza el estado global
         dispatch(loguear({ apiKey, username, idUsuario: id }));
 
         // guardar en AsyncStorage

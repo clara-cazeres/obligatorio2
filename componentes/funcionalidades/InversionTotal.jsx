@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { useSelector } from 'react-redux';
-import { commonStyles } from '../../styles/styles';
+import { globalStyles } from '../../styles/styles';
 
 const InversionTotal = () => {
   const transacciones = useSelector((state) => state.transacciones.lista);
@@ -20,11 +20,11 @@ const InversionTotal = () => {
   const totalInversion = totalCompra - totalVenta;
 
   return (
-    <View style={commonStyles.container}>
-      <Text style={commonStyles.title}>Monto Total de Inversiones</Text>
+    <View style={globalStyles.container}>
+      <Text style={globalStyles.title}>Monto Total de Inversiones</Text>
       <Text
         style={[
-          commonStyles.text,
+          globalStyles.text,
           { color: totalInversion >= 0 ? '#28a745' : '#dc3545', fontSize: 24 },
         ]}
       >

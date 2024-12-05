@@ -12,7 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const AppContent = () => {
   const dispatch = useDispatch();
 
-  // Restaurar sesión al iniciar la app
+  // restaurar sesion
   useEffect(() => {
     const restaurarSesion = async () => {
       try {

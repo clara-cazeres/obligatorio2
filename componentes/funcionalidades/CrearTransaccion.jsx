@@ -4,9 +4,9 @@ import { Picker } from '@react-native-picker/picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMonedas } from '../../features/monedasSlice';
 import { crearTransaccion } from '../../features/transaccionesSlice';
-import { commonStyles } from '../../styles/styles';
+import { globalStyles } from '../../styles/styles';
 
-const CrearTransaccion = () => {
+const CrearTransaccion = ({ navigation }) => { 
   const dispatch = useDispatch();
   const monedas = useSelector((state) => state.monedas.lista);
   const monedasStatus = useSelector((state) => state.monedas.status);
@@ -53,14 +53,15 @@ const CrearTransaccion = () => {
     try {
       const response = await dispatch(crearTransaccion(transaccion)).unwrap();
       Alert.alert('Éxito', `Transacción creada correctamente con ID: ${response.idTransaccion}`);
+     
     } catch (error) {
       Alert.alert('Error', error.message || 'Error al crear la transacción.');
     }
   };
 
   return (
-    <View style={commonStyles.container}>
-      <Text style={commonStyles.title}>Crear transacción</Text>
+    <View style={globalStyles.container}>
+      <Text style={globalStyles.title}>Crear transacción</Text>
       <Text style={styles.label}>Tipo de Operación</Text>
       <Picker selectedValue={tipoOperacion} onValueChange={setTipoOperacion} style={styles.input}>
         <Picker.Item label="Seleccione una operación" value="" />
@@ -70,7 +71,7 @@ const CrearTransaccion = () => {
 
       <Text style={styles.label}>Moneda</Text>
       {monedasStatus === 'loading' ? (
-        <Text style={commonStyles.text}>Cargando monedas...</Text>
+        <Text style={globalStyles.text}>Cargando monedas...</Text>
       ) : monedas?.length > 0 ? (
         <Picker selectedValue={moneda} onValueChange={setMoneda} style={styles.input}>
           <Picker.Item label="Seleccione una moneda" value="" />
@@ -79,7 +80,7 @@ const CrearTransaccion = () => {
           ))}
         </Picker>
       ) : (
-        <Text style={commonStyles.text}>No se pudieron cargar las monedas. Intente nuevamente.</Text>
+        <Text style={globalStyles.text}>No se pudieron cargar las monedas. Intente nuevamente.</Text>
       )}
 
       <Text style={styles.cotizacion}>
@@ -96,8 +97,8 @@ const CrearTransaccion = () => {
         keyboardType="numeric"
       />
 
-      <TouchableOpacity style={commonStyles.button} onPress={handleCrearTransaccion}>
-        <Text style={commonStyles.buttonText}>Crear</Text>
+      <TouchableOpacity style={globalStyles.button} onPress={handleCrearTransaccion}>
+        <Text style={globalStyles.buttonText}>Crear</Text>
       </TouchableOpacity>
     </View>
   );

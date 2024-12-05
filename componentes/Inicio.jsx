@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, Button } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMonedas } from '../features/monedasSlice';
 import { fetchTransacciones } from '../features/transaccionesSlice';
 import { useNavigation } from '@react-navigation/native';
+import { obtenerSugerencias } from '../componentes/funcionalidades/utils/SugerenciaOperacionesComponent';
+import { globalStyles } from '../styles/styles';
 
 const Inicio = () => {
   const dispatch = useDispatch();
@@ -13,10 +15,9 @@ const Inicio = () => {
   const transacciones = useSelector((state) => state.transacciones.lista);
   const idUsuario = useSelector((state) => state.usuario.idUsuario);
   const apiKey = useSelector((state) => state.usuario.apiKey);
+  const nombreUsuario = useSelector((state) => state.usuario.username); 
 
-  // Verificar datos en consola
-  console.log("Transacciones en Inicio:", transacciones);
-  console.log("Monedas en Inicio:", monedas);
+  console.log('nombre usuario:', nombreUsuario);
 
   useEffect(() => {
     if (monedas.length === 0) {
@@ -29,92 +30,85 @@ const Inicio = () => {
 
   const getNombreMoneda = (idMoneda) => {
     const moneda = monedas.find((m) => m.id === idMoneda);
-    console.log("Moneda encontrada:", moneda);
     return moneda ? moneda.nombre : 'Moneda no disponible';
   };
 
+  const transaccionesOrdenadas = [...transacciones].sort((a, b) => b.id - a.id);
+  const sugerencias = obtenerSugerencias(transacciones, monedas).slice(0, 2);
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Bienvenido a la App</Text>
-      <Text style={styles.subtitle}>Resumen de las últimas transacciones:</Text>
+    <ScrollView style={globalStyles.container}>
+      <Text style={globalStyles.title}>Bienvenido/a {nombreUsuario}</Text>
 
-      {transacciones.length === 0 ? (
-        <Text style={styles.empty}>No hay transacciones registradas.</Text>
+      <View style={styles.seccion}>
+      <Text style={styles.subtitle}>Últimas transacciones:</Text>
+        {transaccionesOrdenadas.length === 0 ? (
+       <Text style={globalStyles.empty}>No hay transacciones registradas.</Text>
       ) : (
-        <FlatList
-          data={transacciones.slice(0, 3)}
-          keyExtractor={(item, index) =>
-            item.idTransaccion?.toString() || index.toString()
-          }
-          renderItem={({ item }) => (
-            <View style={styles.transaccion}>
-              <Text style={styles.tipo}>
-                {item.tipoOperacion === 1 ? 'Compra' : 'Venta'} -{' '}
-                {getNombreMoneda(item.moneda)}
-              </Text>
-              <Text style={styles.cantidad}>Cantidad: {item.cantidad}</Text>
-              <Text style={styles.valor}>Valor: $ {item.valorActual}</Text>
-            </View>
-          )}
-        />
-      )}
+      <View>
+        {transaccionesOrdenadas.slice(0, 2).map((item, index) => (
+        <View key={item.id || index} style={globalStyles.card}>
+          <Text style={globalStyles.cardtitle}>
+            {item.tipoOperacion === 1 ? 'Compra de:' : 'Venta de:'}{' '}
+            {getNombreMoneda(item.moneda)}
+          </Text>
+           <Text style={globalStyles.text}>Cantidad: {item.cantidad}</Text>
+          </View>
+          ))}
+      </View>
+  )}
+  <TouchableOpacity
+    style={globalStyles.button}
+    onPress={() => navigation.navigate('Listado de Transacciones')}
+  >
+    <Text style={globalStyles.buttonText}>Ver Transacciones</Text>
+  </TouchableOpacity>
+</View>
 
-      <Button
-        title="Crear Transacción"
-        color="#e3e553"
+
+      <View style={styles.seccion}>
+        <Text style={styles.subtitle}>Sugerencias de Operaciones:</Text>
+        {sugerencias.length === 0 ? (
+          <Text style={globalStyles.empty}>No hay sugerencias disponibles.</Text>
+        ) : (
+          <FlatList
+            data={sugerencias}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => (
+              <Text style={styles.suggestion}>{item}</Text>
+            )}
+          />
+        )}
+      </View>
+  
+      <TouchableOpacity
+        style={globalStyles.button}
         onPress={() => navigation.navigate('Crear Transacción')}
-      />
-    </View>
+      >
+        <Text style={globalStyles.buttonText}>Crear Transacción</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: '#141519',
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#e3e553',
-    marginBottom: 10,
+  seccion: {
+    padding: 10,
+    backgroundColor: '#303136',
+    marginBottom: 20, 
+    borderRadius: 8,
   },
   subtitle: {
+    textTransform: 'uppercase',
     fontSize: 16,
-    color: '#ffffff',
+    color: '#f7f7f7',
     marginBottom: 20,
+    textAlign: 'left',
   },
-  empty: {
-    fontSize: 14,
-    color: '#ffffff',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  transaccion: {
-    backgroundColor: '#242529',
-    padding: 15,
-    borderRadius: 5,
-    marginBottom: 15,
-    width: '100%',
-  },
-  tipo: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#e3e553',
-    marginBottom: 5,
-  },
-  cantidad: {
+  suggestion: {
     fontSize: 16,
-    color: '#ffffff',
-    marginBottom: 5,
-  },
-  valor: {
-    fontSize: 16,
-    color: '#ffffff',
-    marginBottom: 5,
+    color: '#00bcd4',
+    marginBottom: 10,
   },
 });
 
